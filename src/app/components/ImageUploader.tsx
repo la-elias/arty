@@ -5,6 +5,7 @@ import { InboxOutlined } from '@ant-design/icons';
 import type { UploadProps } from 'antd/es/upload/interface';
 import { message, Upload, Skeleton, Button, Image, Result } from 'antd';
 import { createClient } from '@/lib/supabase/client';
+import { StyleSelector } from './StyleSelector';
 // import ImgCrop from 'antd-img-crop';
 
 const { Dragger } = Upload;
@@ -14,6 +15,7 @@ export const ImageUpload = () => {
   // States tp store the image URLs.
   const [uploadedImageUrl,setUploadedImageUrl] = useState<string|null>(null);
   const [isUploading,setIsUploading] = useState<boolean>(false);
+  const [showStyleSelector,setShowStyleSelector] = useState<boolean>(false);
 
   const handleUpload = async (file: File) => {
     const { data,error } = await supabase.storage.from('photos_arty').upload(`user_uploads/${file.name}`,file);
@@ -34,37 +36,37 @@ export const ImageUpload = () => {
   };
 
   // Called when the user clicks "Continue" to trigger ComfyDeploy.
-  const handleContinue = async () => {
-    if (!uploadedImageUrl) {
-      message.error('No image available');
-      return;
-    }
-    const styleImageUrl = await getPublicUrl('styles/pop_art_style.jpg');
-    if (!styleImageUrl) {
-      message.error('Failed to get style image URL');
-      return;
-    }
-    try {
-      const response = await fetch('/api/trigger-comfydeploy', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          input_image: uploadedImageUrl,
-          input_image_style: styleImageUrl,
-        }),
-      });
-      const result = await response.json();
-      if (response.ok) {
-        message.success('ComfyDeploy triggered successfully.');
-        console.log('ComfyDeploy runId:', result.runId);
-      } else {
-        message.error('Failed to trigger ComfyDeploy.');
-      }
-    } catch (error: unknown) {
-      console.error('Error triggering ComfyDeploy:', error);
-      message.error('Error triggering ComfyDeploy: ');
-    }
-  };
+//   const handleContinue = async () => {
+//     if (!uploadedImageUrl) {
+//       message.error('No image available');
+//       return;
+//     }
+//     const styleImageUrl = await getPublicUrl('styles/pop_art_style.jpg');
+//     if (!styleImageUrl) {
+//       message.error('Failed to get style image URL');
+//       return;
+//     }
+//     try {
+//       const response = await fetch('/api/trigger-comfydeploy', {
+//         method: 'POST',
+//         headers: { 'Content-Type': 'application/json' },
+//         body: JSON.stringify({
+//           input_image: uploadedImageUrl,
+//           input_image_style: styleImageUrl,
+//         }),
+//       });
+//       const result = await response.json();
+//       if (response.ok) {
+//         message.success('ComfyDeploy triggered successfully.');
+//         console.log('ComfyDeploy runId:', result.runId);
+//       } else {
+//         message.error('Failed to trigger ComfyDeploy.');
+//       }
+//     } catch (error: unknown) {
+//       console.error('Error triggering ComfyDeploy:', error);
+//       message.error('Error triggering ComfyDeploy: ');
+//     }
+//   };
 
   const uploadProps: UploadProps = {
     name: 'file',
@@ -109,6 +111,10 @@ export const ImageUpload = () => {
     },
   };
 
+  if (showStyleSelector && uploadedImageUrl) {
+    return <StyleSelector uploadedImageUrl={uploadedImageUrl} />;
+  }
+
   return (
     <div className="p-8 max-w-4xl mx-auto flex flex-col md:flex-row gap-8 items-center">
       {/* Left column: Preview area with skeleton during upload */}
@@ -139,7 +145,7 @@ export const ImageUpload = () => {
               <Button key="change" onClick={() => setUploadedImageUrl(null)}>
                 Change Image
               </Button>,
-              <Button key="continue" type="primary" onClick={handleContinue}>
+              <Button key="continue" type="primary" onClick={() => setShowStyleSelector(true)}>
                 Continue
               </Button>,
             ]}
