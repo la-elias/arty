@@ -94,13 +94,18 @@ export const StyleSelector: React.FC<StyleSelectorProps> = ({ uploadedImageUrl }
                     />
                 </div>
               }
-              className={`cursor-pointer ${
-                selectedStyles.includes(style.id)
-                  ? 'border-blue-500 border-2 bg-blue-50'
-                  : ''
-              }`}
+              className={`
+                cursor-pointer transition-all border 
+                ${
+                  selectedStyles.includes(style.id)
+                    ? 'border-blue-500 border-2 bg-blue-50 dark:bg-blue-900 dark:border-blue-400'
+                    : 'border-gray-300 dark:border-gray-700 dark:bg-gray-800'
+                }
+                hover:shadow-lg dark:hover:bg-gray-700 dark:hover:border-gray-500
+                text-center
+              `}
             >
-              <Meta title={style.title} />
+              <Meta title={<h3 className='text-gray-900 dark:text-gray-100'>{style.title}</h3>} />
             </Card>
           </Col>
         ))}
@@ -108,6 +113,9 @@ export const StyleSelector: React.FC<StyleSelectorProps> = ({ uploadedImageUrl }
       <div className="flex justify-center mt-4">
         <Button
           type="primary"
+          className="dark:bg-blue-800 dark:border-transparent dark:text-white
+                    dark:disabled:bg-gray-700 dark:disabled:text-gray-400 dark:disabled:border-gray-600
+                    disabled:bg-gray-300 disabled:text-gray-500 disabled:border-gray-400"
           onClick={handleSubmit}
           disabled={selectedStyles.length === 0}
         >

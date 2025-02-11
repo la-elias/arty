@@ -41,6 +41,7 @@ export const ImageUpload = () => {
     multiple: false,
     listType: 'picture',
     maxCount: 1,
+    className: 'dark:bg-gray-900 dark:text-gray-300',
     customRequest: async (options) => {
         const { file, onSuccess, onError } = options;
         try {
@@ -85,19 +86,21 @@ export const ImageUpload = () => {
   return (
     <div className="p-8 max-w-4xl mx-auto flex flex-col md:flex-row gap-8 items-center">
       {/* Left column: Preview area with skeleton during upload */}
-      <div className="md:w-1/3 w-full">
+      <div className="md:w-1/3 w-full flex justify-center">
         {isUploading ? (
-          <Skeleton.Image active className="w-full h-40" />
+          <Skeleton.Image active className="w-full dark:bg-gray-900" />
         ) : uploadedImageUrl ? (
           <Image
             src={uploadedImageUrl}
             alt="Uploaded"
             style={{ width: '100%', height: 'auto' }}
-            className="w-full h-auto rounded-md border"
+            className="w-full h-auto rounded-md border dark:border-gray-700"
           />
         ) : (
-          <div className="w-full h-80 bg-gray-100 rounded-md flex items-center justify-center">
-            <span className="text-gray-500">No image uploaded</span>
+          <div className="w-full h-80 bg-gray-100 rounded-md flex items-center justify-center dark:bg-gray-800">
+            <span className="text-gray-500 dark:text-gray-400">
+            No image uploaded
+            </span>
           </div>
         )}
       </div>
@@ -105,14 +108,15 @@ export const ImageUpload = () => {
       <div className="md:w-2/3 w-full">
         {uploadedImageUrl ? (
           <Result
+            className='dark:bg-gray-900 dark:text-gray-300'
             status="success"
-            title="Image uploaded successfully"
-            subTitle="Your image is ready. You can change it or continue to trigger ComfyDeploy."
+            title={<p className='text-black dark:text-gray-400'>Image uploaded successfully</p>}
+            subTitle={<p className='text-black dark:text-gray-400'>Your image is ready. You can change it or continue to trigger ComfyDeploy.</p>}
             extra={[
-              <Button key="change" onClick={() => setUploadedImageUrl(null)}>
+              <Button className="border dark:border-gray-900 dark:bg-gray-400" key="change" onClick={() => setUploadedImageUrl(null)}>
                 Change Image
               </Button>,
-              <Button key="continue" type="primary" onClick={() => setShowStyleSelector(true)}>
+              <Button className="dark:bg-blue-800 dark:border-transparent" key="continue" type="primary" onClick={() => setShowStyleSelector(true)}>
                 Continue
               </Button>,
             ]}
@@ -126,10 +130,10 @@ export const ImageUpload = () => {
               <p className="ant-upload-drag-icon text-4xl text-blue-500">
                 <InboxOutlined />
               </p>
-              <p className="ant-upload-text text-lg">
+              <p className="text-lg dark:text-gray-300">
                 Click or drag file to upload your image
               </p>
-              <p className="ant-upload-hint text-sm">
+              <p className="text-sm dark:text-gray-400">
                 Support for a single upload. Strictly prohibited from uploading company data or other banned files.
               </p>
             </Dragger>
