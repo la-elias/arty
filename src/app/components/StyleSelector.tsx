@@ -37,7 +37,6 @@ export const StyleSelector: React.FC<StyleSelectorProps> = ({ uploadedImageUrl }
       return;
     }
     const newRunIds: string[] = [];
-    console.log('Selected styles:', selectedStyles);
     for (const styleId of selectedStyles) {
         const style = stylesList.find((s) => s.id === styleId);
         if (!style) continue;
