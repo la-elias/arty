@@ -35,41 +35,9 @@ export const ImageUpload = () => {
     return data?.signedUrl;
   };
 
-  // Called when the user clicks "Continue" to trigger ComfyDeploy.
-//   const handleContinue = async () => {
-//     if (!uploadedImageUrl) {
-//       message.error('No image available');
-//       return;
-//     }
-//     const styleImageUrl = await getPublicUrl('styles/pop_art_style.jpg');
-//     if (!styleImageUrl) {
-//       message.error('Failed to get style image URL');
-//       return;
-//     }
-//     try {
-//       const response = await fetch('/api/trigger-comfydeploy', {
-//         method: 'POST',
-//         headers: { 'Content-Type': 'application/json' },
-//         body: JSON.stringify({
-//           input_image: uploadedImageUrl,
-//           input_image_style: styleImageUrl,
-//         }),
-//       });
-//       const result = await response.json();
-//       if (response.ok) {
-//         message.success('ComfyDeploy triggered successfully.');
-//         console.log('ComfyDeploy runId:', result.runId);
-//       } else {
-//         message.error('Failed to trigger ComfyDeploy.');
-//       }
-//     } catch (error: unknown) {
-//       console.error('Error triggering ComfyDeploy:', error);
-//       message.error('Error triggering ComfyDeploy: ');
-//     }
-//   };
-
   const uploadProps: UploadProps = {
     name: 'file',
+    accept: '.jpg,.jpeg,.png',
     multiple: false,
     listType: 'picture',
     maxCount: 1,
@@ -89,7 +57,6 @@ export const ImageUpload = () => {
     const { status } = info.file;
     if (status === 'uploading') {
         setIsUploading(true);
-        console.log(info.file, info.fileList);
     }
     if (status === 'done') {
         setIsUploading(false);
