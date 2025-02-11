@@ -12,7 +12,7 @@ export const POST = async (request:Request)=>{
 
     const result = await cd.run.deployment.queue({
       deploymentId:"a7eb6daa-dd7c-4179-9c2b-09bbb505772d",
-      webhook:process.env.COMFY_DEPLOY_WEBHOOK_URL || "https://your-domain.com/api/webhook",
+      webhook:process.env.COMFY_DEPLOY_WEBHOOK_URL,
       inputs:{input_image_style,input_image}
     });
 
